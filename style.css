@@ -1,0 +1,404 @@
+/* ============================================================
+   ari.bana — Estilos principales  ·  Mobile-First
+   ============================================================ */
+
+:root {
+    --ink: #e8e0e4;
+    --paper: #0c0a10;
+    --rose: #f43f5e;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ---- Reset y base ---- */
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+}
+
+body {
+    background-color: var(--paper);
+    color: var(--ink);
+    background-image:
+        radial-gradient(rgba(244, 63, 94, 0.12) 1px, transparent 1px),
+        radial-gradient(rgba(168, 85, 247, 0.08) 1px, var(--paper) 1px);
+    background-size: 60px 60px;
+    background-position: 0 0, 30px 30px;
+    overflow-x: hidden;
+    min-height: 100dvh;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Accesibilidad */
+:focus-visible {
+    outline: 3px solid #fb7185;
+    outline-offset: 3px;
+    border-radius: 12px;
+}
+
+/* Desactiva efecto "pegajoso" del hover en táctil */
+button, [role="button"], a {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ---- Scrollbar personalizado ---- */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #0f0d13; }
+::-webkit-scrollbar-thumb { background: rgba(244, 63, 94, 0.3); border-radius: 10px; }
+
+/* ============================================================
+   CINTAS WASHI (scrapbook)
+   ============================================================ */
+.washi-tape-1 {
+    backdrop-filter: blur(2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .06);
+    background-color: rgba(244, 63, 94, 0.2);
+    transform: rotate(-3deg);
+}
+
+/* ============================================================
+   POLAROIDS — Flip 3D
+   ============================================================ */
+.flip-card { perspective: 1200px; }
+.flip-card-inner {
+    position: relative; width: 100%; height: 100%;
+    transition: transform .8s cubic-bezier(.4, 0, .2, 1);
+    transform-style: preserve-3d;
+}
+.flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+.flip-card-front, .flip-card-back {
+    position: absolute; inset: 0;
+    -webkit-backface-visibility: hidden; backface-visibility: hidden;
+    border-radius: 1.25rem;
+}
+.flip-card-back { transform: rotateY(180deg); pointer-events: none; }
+.flip-card.flipped .flip-card-front { pointer-events: none; }
+.flip-card.flipped .flip-card-back { pointer-events: auto; }
+
+/* ============================================================
+   CANVAS FX — pétalos y confeti
+   ============================================================ */
+#fx-canvas {
+    position: fixed; inset: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 90;
+}
+
+/* ============================================================
+   ROSA — escenario y canvas
+   ============================================================ */
+#rose-stage {
+    background:
+        radial-gradient(ellipse at 50% 38%, rgba(190, 24, 93, .35), transparent 62%),
+        linear-gradient(180deg, #14091a 0%, #25102f 55%, #0f0714 100%);
+}
+#rose-canvas {
+    width: min(100%, 340px);
+    aspect-ratio: 360 / 460;
+    display: block;
+    touch-action: manipulation;
+}
+
+/* ============================================================
+   CARTA — animación de apertura
+   ============================================================ */
+.letter-in { animation: letterIn .7s cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes letterIn {
+    from { opacity: 0; transform: translateY(14px) scale(.98); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* ============================================================
+   TOAST — aviso flotante
+   ============================================================ */
+#toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(var(--safe-bottom) + 24px);
+    z-index: 100;
+    max-width: calc(100vw - 2rem);
+    text-align: center;
+    transform: translate(-50%, 24px);
+    opacity: 0;
+    pointer-events: none;
+    transition: all .35s ease;
+}
+#toast.show { transform: translate(-50%, 0); opacity: 1; }
+
+/* ============================================================
+   SAFE AREAS — respeto de muesca, Dynamic Island y barra
+   ============================================================ */
+#top-bar {
+    top: calc(var(--safe-top) + .75rem);
+}
+
+#main-content {
+    padding-bottom: calc(6rem + var(--safe-bottom));
+}
+
+#config-drawer {
+    height: 100dvh;
+    padding-bottom: calc(1.5rem + var(--safe-bottom));
+    overscroll-behavior: contain;
+}
+
+/* ============================================================
+   🔑  MEJORAS MÓVILES  (max-width: 639px)
+   ============================================================ */
+@media (max-width: 639px) {
+
+    /* Tipografía legible — 16px evita zoom en inputs en iOS */
+    #config-form input,
+    #config-form textarea { font-size: 16px; }
+
+    /* Rosa un poco más chica para que no se corte */
+    #rose-canvas { width: min(100%, 300px); }
+
+    /* Hero: título más compacto */
+    .hero-title { font-size: 2.2rem !important; }
+
+    /* Polaroids: scroll horizontal con snap en lugar de stack vertical */
+    #polaroid-grid {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        gap: 16px !important;
+        padding: 8px 4px 20px 4px;
+        /* Ocultar scrollbar pero mantener scroll */
+        scrollbar-width: none;
+    }
+    #polaroid-grid::-webkit-scrollbar { display: none; }
+
+    #polaroid-grid > .flip-card {
+        flex: 0 0 85vw;
+        max-width: 320px;
+        scroll-snap-align: center;
+        height: 22rem;
+    }
+
+    /* Indicador visual de que hay más polaroids */
+    #polaroid-grid::after {
+        content: '';
+        flex: 0 0 1px;
+    }
+
+    /* Separaciones más compactas en móvil */
+    main.space-y-14 > * + *,
+    main.space-y-20 > * + * { margin-top: 2.5rem !important; }
+
+    /* Sobre de carta más compacto */
+    #envelope { padding: 20px !important; }
+
+    /* Menú lateral: ocupa todo el ancho */
+    #config-drawer { width: 100% !important; }
+
+    /* Sección de la rosa más ajustada */
+    #rose-stage { padding: 12px !important; }
+}
+
+/* Pantallas muy pequeñas (iPhone SE, etc.) */
+@media (max-width: 374px) {
+    .hero-title { font-size: 1.8rem !important; }
+
+    #polaroid-grid > .flip-card {
+        flex: 0 0 90vw;
+    }
+
+    #rose-canvas { width: min(100%, 260px); }
+}
+
+/* Tablets en landscape */
+@media (min-width: 640px) and (max-width: 1023px) {
+    #polaroid-grid {
+        gap: 20px !important;
+    }
+}
+
+/* ============================================================
+   INDICADOR DE SCROLL para las polaroids (mobile)
+   ============================================================ */
+.scroll-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding-top: 8px;
+}
+.scroll-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(244, 63, 94, 0.25);
+    opacity: 0.4;
+    transition: all .3s ease;
+}
+.scroll-dot.active {
+    opacity: 1;
+    background: var(--rose);
+    transform: scale(1.3);
+    box-shadow: 0 0 8px rgba(244, 63, 94, 0.5);
+}
+
+/* Solo visible en móvil */
+@media (min-width: 640px) {
+    .scroll-indicator { display: none; }
+}
+
+/* ============================================================
+   ANIMACIONES SUAVES DE ENTRADA (scroll-reveal)
+   ============================================================ */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================================================
+   REDUCE MOTION — respeta la preferencia del usuario
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+    .reveal { opacity: 1; transform: none; }
+}
+
+/* Táctil sin hover */
+@media (hover: none) {
+    .group:hover img { transform: none; }
+    .group:hover .group-hover\:scale-110 { transform: none; }
+}
+
+/* ============================================================
+   DRAWER backdrop — transición suave
+   ============================================================ */
+#drawer-backdrop {
+    transition: opacity 0.3s ease;
+}
+
+/* ============================================================
+   Swipe hint — flecha animada para polaroids en móvil
+   ============================================================ */
+@keyframes swipeHint {
+    0%, 100% { transform: translateX(0); opacity: 0.6; }
+    50% { transform: translateX(8px); opacity: 1; }
+}
+.swipe-hint {
+    display: none;
+}
+@media (max-width: 639px) {
+    .swipe-hint {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        color: #fb7185;
+        font-size: 12px;
+        font-weight: 600;
+        padding-top: 4px;
+    }
+    .swipe-hint i {
+        animation: swipeHint 1.5s ease-in-out infinite;
+    }
+}
+/* ============================================================
+   ✨ MEJORAS VISUALES
+   ============================================================ */
+
+/* Fondo con brillo suave */
+body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+        radial-gradient(600px 400px at 15% 10%, rgba(244, 63, 94, .16), transparent 70%),
+        radial-gradient(500px 400px at 90% 60%, rgba(168, 85, 247, .14), transparent 70%);
+}
+
+/* Título con brillo y nombre con degradado */
+.hero-title {
+    text-shadow: 0 0 28px rgba(244, 63, 94, .45);
+    letter-spacing: .5px;
+}
+#hero-name {
+    background: linear-gradient(90deg, #fbbf24, #fb7185);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+}
+
+/* Contador de amistad */
+.counter-box {
+    min-width: 76px;
+    padding: 10px 12px;
+    border-radius: 18px;
+    border: 1px solid rgba(244, 63, 94, .25);
+    background: linear-gradient(160deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .02));
+    box-shadow: 0 10px 28px rgba(0, 0, 0, .35);
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+.counter-box b {
+    font-family: 'Caveat', cursive;
+    font-size: 2.2rem; line-height: 1;
+    color: #fbbf24;
+}
+.counter-box span {
+    font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+    color: #a8a29e; font-weight: 600;
+}
+@media (min-width: 640px) {
+    .counter-box { min-width: 100px; padding: 14px 16px; }
+    .counter-box b { font-size: 3rem; }
+}
+
+/* Títulos de sección con línea decorativa */
+section h2::after {
+    content: '';
+    display: block; width: 60px; height: 3px; margin: 8px auto 0;
+    border-radius: 99px;
+    background: linear-gradient(90deg, transparent, #fb7185, transparent);
+}
+
+/* Polaroids más naturales */
+.flip-card { transition: transform .35s ease, filter .35s ease; }
+.flip-card:nth-child(odd)  { transform: rotate(-1.5deg); }
+.flip-card:nth-child(even) { transform: rotate(1.5deg); }
+@media (hover: hover) {
+    .flip-card:hover {
+        transform: rotate(0) translateY(-6px) scale(1.02);
+        filter: drop-shadow(0 14px 22px rgba(244, 63, 94, .25));
+    }
+}
+.flip-card-front { background: linear-gradient(180deg, #1f1827, #17121d) !important; }
+.flip-card-front img,
+.flip-card-front video { object-position: center 30%; }
+
+/* Sobre/carta como papel */
+#envelope {
+    background: linear-gradient(160deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .02));
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .45), inset 0 0 0 1px rgba(255, 255, 255, .04);
+}
+#letter-body { font-size: 16px; line-height: 1.9; }
+@media (min-width: 640px) { #letter-body { font-size: 15px; } }
+
+/* Escenario de la rosa con más profundidad */
+#rose-stage {
+    box-shadow: 0 25px 60px rgba(190, 24, 93, .25), inset 0 0 60px rgba(0, 0, 0, .4);
+}
+
+/* Botón con pulso para invitar a tocar */
+#btn-bloom { animation: pulseBtn 2.4s ease-in-out infinite; }
+@keyframes pulseBtn {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(251, 113, 133, .5); }
+    50%      { box-shadow: 0 0 0 12px rgba(251, 113, 133, 0); }
+}
+
+/* Aviso flotante */
+#toast { white-space: nowrap; }

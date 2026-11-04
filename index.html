@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0c0a10">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <title>🌹 Especial de Cumpleaños | Para Mi Mejor Amiga</title>
+
+    <!-- Pantalla de carga: se ve al instante, aunque aún no hayan cargado los estilos -->
+    <style>
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            padding: 24px;
+            text-align: center;
+            background: #0c0a10;
+            color: #fb7185;
+            font-family: Georgia, serif;
+            transition: opacity .5s ease;
+        }
+
+        #loader.done {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #loader .rose {
+            font-size: 56px;
+            animation: loaderPulse 1.2s ease-in-out infinite;
+        }
+
+        #loader p {
+            margin: 0;
+            max-width: 320px;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+
+        @keyframes loaderPulse {
+            50% {
+                transform: scale(1.15);
+            }
+        }
+    </style>
+    <script>
+        (function () {
+            var shown = false;
+
+            function check(final) {
+                var loader = document.getElementById('loader');
+                if (!loader || shown) return;
+                if (window.__giftReady && window.tailwind) {
+                    shown = true;
+                    loader.classList.add('done');
+                    setTimeout(function () { loader.remove(); }, 600);
+                } else if (final) {
+                    var p = loader.querySelector('p');
+                    p.textContent = !window.tailwind
+                        ? 'No cargaron los estilos. Revisa tu conexión a internet y recarga la página.'
+                        : 'No cargó script.js. Deja index.html, style.css y script.js en la misma carpeta y recarga.';
+                    loader.querySelector('.rose').style.animation = 'none';
+                }
+            }
+
+            // Red de seguridad: si algo falla, las secciones .reveal nunca quedan ocultas
+            function showAll() {
+                document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('visible'); });
+            }
+
+            window.addEventListener('load', function () { setTimeout(check, 350); });
+            setTimeout(function () { check(true); }, 8000);
+            setTimeout(showAll, 3500);
+            window.__giftCheck = check;
+        })();
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        handwriting: ['Caveat', 'cursive'],
+                        script: ['"Great Vibes"', 'cursive'],
+                    }
+                }
+            }
+        };
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="font-sans antialiased relative min-h-screen selection:bg-pink-900 selection:text-pink-200">
+
+    <div id="loader" role="status">
+        <div class="rose">🌹</div>
+        <p>Preparando tu regalo…</p>
+    </div>
+
+    <canvas id="fx-canvas" aria-hidden="true"></canvas>
+
+    <!-- Aviso flotante (lo usa el panel de personalización) -->
+    <div id="toast" role="status" aria-live="polite"
+        class="bg-rose-500 text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow-lg"></div>
+
+    <!-- Controles superiores -->
+    <div id="top-bar" class="fixed right-3 sm:right-4 z-40 flex items-center gap-2 sm:gap-3">
+        <button id="btn-audio" type="button" aria-pressed="false" aria-label="Música"
+            class="min-h-[44px] min-w-[44px] justify-center bg-white/10 backdrop-blur-md border border-rose-500/30 px-3 sm:px-4 py-2 rounded-full text-xs font-semibold text-rose-400 hover:bg-rose-500/20 shadow-md flex items-center gap-2 transition-all active:scale-95">
+            <i id="audio-icon" class="fa-solid fa-music"></i>
+            <span id="audio-label" class="hidden sm:inline">MÚSICA: OFF</span>
+        </button>
+        <button id="btn-settings" type="button" title="Personalizar web" aria-label="Personalizar web"
+            class="w-11 h-11 flex items-center justify-center bg-white/10 backdrop-blur-md border border-rose-500/30 rounded-full text-rose-400 hover:bg-rose-500/20 shadow-md transition-all active:scale-95">
+            <i class="fa-solid fa-gear text-base"></i>
+        </button>
+    </div>
+
+    <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
+    <div id="main-content" class="relative z-10 min-h-screen pb-24">
+        <main class="max-w-4xl mx-auto px-4 pt-24 sm:pt-20 space-y-14 sm:space-y-20">
+
+            <!-- HERO -->
+            <section class="text-center space-y-6 relative reveal">
+                <h1
+                    class="hero-title font-handwriting text-[2.6rem] sm:text-7xl font-bold text-rose-400 leading-[1.1] sm:leading-tight">
+                    ¡Feliz Cumpleaños, mi hermana! <br>
+                    <span id="hero-name" class="inline-block pb-2"></span>
+                </h1>
+
+        
+
+            <!-- 🌹 ROSA -->
+            <section class="max-w-xl mx-auto text-center space-y-4 reveal" aria-labelledby="rose-title">
+                <div class="space-y-1">
+                    <span
+                        class="bg-amber-500/15 text-amber-400 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
+                        pa ti care poto </span>
+                    <h2 id="rose-title" class="font-handwriting text-4xl font-bold text-rose-400">UNA ROSA</h2>
+                </div>
+
+                <div id="rose-stage"
+                    class="rounded-3xl p-3 sm:p-6 shadow-2xl border-2 border-rose-500/20 relative overflow-hidden flex flex-col items-center">
+                    <canvas id="rose-canvas" role="img" aria-label="Una rosa roja que florece"
+                        class="cursor-pointer"></canvas>
+                    <button id="btn-bloom" type="button"
+                        class="mt-2 sm:mt-4 min-h-[48px] bg-gradient-to-r from-rose-400 to-pink-500 text-white font-bold px-6 py-3 rounded-full text-sm shadow-lg hover:shadow-rose-400/50 hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>TOCA AQUÍ SI QUIERES</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 💌 CARTA -->
+            <section class="max-w-xl mx-auto text-center space-y-4 reveal" aria-labelledby="letter-title">
+                <div class="space-y-1">
+                    <h2 id="letter-title" class="font-handwriting text-4xl font-bold text-rose-400">POR QUE ME DAS PENA
+                        NOMA TE DIRE ALGO</h2>
+                </div>
+
+                <div id="envelope" role="button" tabindex="0" aria-expanded="false"
+                    class="cursor-pointer bg-white/5 p-6 sm:p-10 rounded-3xl border-2 border-rose-500/20 hover:border-rose-500/40 shadow-xl relative overflow-hidden transition-all duration-300 group">
+                    <div class="washi-tape-1 absolute -top-3 left-1/2 -translate-x-1/2 w-32 h-7 z-10"></div>
+
+                    <div id="envelope-closed" class="flex flex-col items-center gap-4 py-6">
+                        <div
+                            class="w-20 h-20 rounded-full bg-rose-500/15 text-rose-400 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-envelope-open-text"></i>
+                        </div>
+                        <span class="font-handwriting text-2xl text-rose-400 font-bold">CLICK</span>
+                    </div>
+
+                    <div id="envelope-opened" class="hidden text-left space-y-4">
+                        <div class="flex justify-between items-center border-b border-rose-500/20 pb-3">
+                            <span class="font-script text-3xl font-bold text-rose-400">Pa ti </span>
+                            <i class="fa-solid fa-heart text-rose-500"></i>
+                        </div>
+                         <p class="font-handwriting text-2xl text-rose-400">
+                       
+
+Sinceramente quiero desearte un muy feliz cumpleañs. Creo que es la primera vez que te  dedico algo asi y ps es espcial para mi por que va dirigido a ti,  alguien con quien puedo contar un apoyo, reírme por cualquier tontería, compartir momentos, hablar de todo y crear recuerdos que, aunque pasen los años, siempre tendran su lugar.
+
+Quiero que sepas que no eres simplemnete una amiga más, eres como practicamente mi hermana de otra sangre, eres de esas personas  que llegan a la vida y dejan una huella bonita. Deverdad que te conozco tantos años y simplemente gracias por tu amistad, por tu confianza, por cada ocurrencia y por todos esos momentos que hacen que nuestra amistad sea tan especial.
+ 
+De corazón, deseo que la vida te sorprenda con cosas maravillosas, que cumplas cada uno de tus sueños y que nunca pierdas esa esencia tan bonita que te caracteriza. Si algún día las cosas no salen como esperas, recuerda que aquí tendrás a alguien que te apoya y siempre querrá verte feliz.
+
+Ojalá nunca nos falten motivos para seguir riéndonos, pasarlo elegante y recuerdos que algún día miraremos con una sonrisa.
+
+Disfruta muchísimo tu día, porque mereces ser feliz no solamente hoy, sino todos los días de tu vida.
+
+Desearte tambien que Dios te bengida y te de muchos años mas de vida. 
+
+                    
+                       
+                    </div>
+                </div>
+            </section>
+
+            <!-- 📸 POLAROIDS -->
+            <section class="space-y-8 reveal" aria-labelledby="gallery-title">
+                <div class="text-center space-y-2">
+                    <h2 id="gallery-title" class="font-handwriting text-4xl sm:text-5xl font-bold text-stone-200">
+                        ALGUNAS FOTICOS</h2>
+                    <p class="text-xs text-stone-500 hidden sm:block">Toca una polaroid para girarla y leer la anécdota
+                        del reverso</p>
+                    <div class="swipe-hint sm:hidden">
+                        <span>Desliza para ver más</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                    
+                </div>
+                <div id="polaroid-grid"
+                    class="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 w-full max-w-sm sm:max-w-none mx-auto"></div>
+                <div id="scroll-dots" class="scroll-indicator"></div>
+            </section>
+
+            <footer class="text-center pb-6">
+                <p class="font-script text-3xl text-rose-400/80">Te quiero mucho 🌹</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- ==================== PANEL DE PERSONALIZACIÓN ==================== -->
+    <div id="drawer-backdrop" class="fixed inset-0 z-40 bg-black/50 backdrop-blur-[3px] hidden"></div>
+
+    <aside id="config-drawer" aria-hidden="true" aria-label="Personalizar web"
+        class="fixed inset-y-0 right-0 z-50 w-full sm:w-96 bg-[#141118]/95 backdrop-blur-lg p-6 translate-x-full transition-transform duration-500 shadow-2xl overflow-y-auto space-y-6 border-l border-rose-500/10">
+        <div class="flex justify-between items-center border-b border-rose-500/20 pb-4">
+            <h3 class="font-handwriting text-2xl font-bold text-rose-400 flex items-center gap-2">
+                <i class="fa-solid fa-sliders text-base"></i>
+                <span>Personalizar web</span>
+            </h3>
+            <button id="btn-close-drawer" type="button" aria-label="Cerrar"
+                class="w-11 h-11 -mr-2 flex items-center justify-center text-stone-500 hover:text-stone-300">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+
+        <form id="config-form" class="space-y-4 text-sm sm:text-xs font-medium">
+            <div>
+                <label for="cfg-name" class="block text-stone-400 mb-1">Nombre de tu amiga</label>
+                <input type="text" id="cfg-name" required maxlength="40"
+                    class="w-full bg-white/5 border border-rose-500/20 rounded-xl px-3 py-2 text-stone-200 focus:outline-none focus:border-rose-400">
+            </div>
+            <div>
+                <label for="cfg-date" class="block text-stone-400 mb-1">Fecha de inicio de la amistad</label>
+                <input type="date" id="cfg-date" required
+                    class="w-full bg-white/5 border border-rose-500/20 rounded-xl px-3 py-2 text-stone-200 focus:outline-none focus:border-rose-400">
+            </div>
+            <div>
+                <label for="cfg-letter" class="block text-stone-400 mb-1">Carta de dedicatoria</label>
+                <textarea id="cfg-letter" rows="6" required
+                    class="w-full bg-white/5 border border-rose-500/20 rounded-xl px-3 py-2 text-stone-200 focus:outline-none focus:border-rose-400"></textarea>
+            </div>
+            <div>
+                <label for="cfg-sign" class="block text-stone-400 mb-1">Firma al final</label>
+                <input type="text" id="cfg-sign" required maxlength="80"
+                    class="w-full bg-white/5 border border-rose-500/20 rounded-xl px-3 py-2 text-stone-200 focus:outline-none focus:border-rose-400">
+            </div>
+            <div class="pt-4 flex gap-2">
+                <button type="button" id="btn-cancel"
+                    class="w-1/2 py-3 rounded-xl border border-rose-500/20 text-stone-400 font-semibold hover:bg-white/5">Cancelar</button>
+                <button type="submit"
+                    class="w-1/2 py-3 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold shadow-md">Guardar
+                    cambios</button>
+            </div>
+        </form>
+    </aside>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
